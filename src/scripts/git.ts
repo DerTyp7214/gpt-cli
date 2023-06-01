@@ -3,8 +3,9 @@
 import chalk from 'chalk'
 import { spawn } from 'child_process'
 import inquirer from 'inquirer'
+import Os from 'os'
 import ChatGpt from '../gpt/api.js'
-import { SystemInfo, getSystemInfo } from '../os/info.js'
+import { getBranches, getChangedFiles, getRemotes, getTags } from '../os/git.js'
 
 const chatGpt = new ChatGpt()
 
@@ -15,38 +16,53 @@ const specifications = [
   'Do not put the answer in a code block.',
   'No "Answer:" or "Output:" or anything else.',
   'No "The answer is:" or "The output is:" or anything else.',
+  'This is only for git related questions.',
+  'Use the information of username and git info to answer the question. You dont need access to the machine to answer the question. I gave you all the information you need.',
+  'You can use gitmoji to generate a commit message.',
   'I want a command line answer, not a script.',
-  'It should be runnable in a the given shell.',
   'It can be multiple commands, but append them with &&.',
 ]
 
-let systemInfo: SystemInfo
-
-async function fetchSystemInfo(): Promise<SystemInfo> {
-  if (!systemInfo) systemInfo = await getSystemInfo()
-  return systemInfo
-}
-
-async function buildSystemInfoHeader() {
-  const systemInfo = await fetchSystemInfo()
-
+async function buildGitInfoHeader() {
   return [
-    `OS: ${systemInfo.os} ${systemInfo.osVersion}`,
-    systemInfo.shell ? `Shell: ${systemInfo.shell}` : null,
-    `Current Directory: ${systemInfo.currentDirectory}`,
-    `Time: ${systemInfo.time}`,
-    `Date: ${systemInfo.date}`,
-    `Username: ${systemInfo.username}`,
+    `Current Directory: ${process.cwd()}`,
+    `Username: ${Os.userInfo().username}`,
   ]
     .filter((line) => line !== null)
     .join('\n')
 }
 
 async function buildQuery(query: string) {
+  const [changedFiles, remotes, branches, tags] = await Promise.all([
+    getChangedFiles(),
+    getRemotes(),
+    getBranches(),
+    getTags(),
+  ])
+
   return `
     System Info:
-    ${await buildSystemInfoHeader()}
+    ${await buildGitInfoHeader()}
 
+    Git Info:
+    ${
+      changedFiles.length > 0
+        ? `Changed Files:\n    ${changedFiles.join('\n    ')}\n`
+        : 'No Changed Files'
+    }
+    ${
+      remotes.length > 0
+        ? `Remotes:\n    ${remotes.join('\n    ')}\n`
+        : 'No Remotes'
+    }
+    ${
+      branches.length > 0
+        ? `Branches:\n    ${branches.join('\n    ')}\n`
+        : 'No Branches'
+    }
+    ${tags.length > 0 ? `Tags:\n    ${tags.join('\n    ')}\n` : 'No Tags'}
+
+    Wanted Answer:
 ${specifications.map((specification) => `    ${specification}`).join('\n')}
     
 ${query.startsWith('Error:') ? '' : 'Question:'}
@@ -113,7 +129,7 @@ async function runCommand(command: string) {
   console.log('\n')
   const child = spawn(command, {
     stdio: 'inherit',
-    shell: systemInfo.shellExecutable?.[1] ?? true,
+    shell: true,
   })
 
   let output = ''
