@@ -29,6 +29,7 @@ const specifications = [
   'You can use gitmoji to generate a commit message.',
   'I want a command line answer, not a script.',
   'It can be multiple commands, but append them with &&.',
+  'Again, just the command line answer, no explanation needed.',
 ]
 
 async function buildGitInfoHeader() {
