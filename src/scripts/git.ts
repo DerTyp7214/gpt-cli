@@ -125,6 +125,7 @@ async function ask(
 
       if (answers.answer === 'yes') {
         for (const command of answer.split('\n')) {
+          console.log(`Running: ${parseCommand(command)}`)
           await runCommand(command)
         }
       }
