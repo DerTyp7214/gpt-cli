@@ -125,7 +125,9 @@ async function ask(
 
       if (answers.answer === 'yes') {
         for (const command of answer.split('\n')) {
-          console.log(`Running: ${parseCommand(command)}`)
+          console.log(
+            `\n\n${chalk.magentaBright('Running')}: ${parseCommand(command)}`
+          )
           await runCommand(command)
         }
       }
@@ -169,7 +171,6 @@ async function ask(
 }
 
 async function runCommand(command: string) {
-  console.log('\n')
   const child = spawn(command, {
     stdio: 'inherit',
     shell: true,
@@ -244,6 +245,9 @@ async function run() {
     process.exit(0)
   }
 
+  console.log(
+    `\n\n${chalk.magentaBright('Running')}: ${parseCommand(answer)}\n`
+  )
   await runCommand(answer)
 }
 
