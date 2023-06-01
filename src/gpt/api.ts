@@ -2,6 +2,7 @@ import axios from 'axios'
 import chalk from 'chalk'
 import dotenv from 'dotenv'
 import logUpdate from 'log-update'
+import path from 'path'
 
 const frameString = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
 let frameIndex = 0
@@ -19,8 +20,22 @@ class ChatGPT {
   private _token: string
 
   constructor() {
-    dotenv.config()
-    this._token = process.env.CHAT_GPT_TOKEN ?? ''
+    dotenv.config({ path: '.env' })
+
+    let token = process.env.CHAT_GPT_TOKEN
+
+    if (!token) {
+      const envPath = path.join(
+        path.dirname(process.execPath),
+        'node_modules',
+        'gpt-cli',
+        '.env'
+      )
+      dotenv.config({ path: envPath })
+      token = process.env.CHAT_GPT_TOKEN
+    }
+
+    this._token = token ?? ''
   }
 
   async query(

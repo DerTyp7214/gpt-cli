@@ -11,6 +11,7 @@ import {
   getRemotes,
   getStagedFiles,
   getTags,
+  isGitRepo,
 } from '../os/git.js'
 import { parseCommand } from '../utils.js'
 
@@ -229,6 +230,11 @@ async function runCommand(command: string) {
 async function run() {
   const args = process.argv.slice(2)
   const argsString = args.join(' ')
+
+  if (!(await isGitRepo())) {
+    console.log(chalk.red('Not a git repository!'))
+    process.exit(1)
+  }
 
   if (args.length === 0) {
     console.log(chalk.red('No arguments provided!'))

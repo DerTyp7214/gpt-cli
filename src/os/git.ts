@@ -2,6 +2,15 @@ import simpleGit from 'simple-git'
 
 const git = simpleGit()
 
+export async function isGitRepo(): Promise<boolean> {
+  try {
+    await git.status()
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
 export async function getChangedFiles(): Promise<string[]> {
   const status = await git.status()
   return status.files.map((file) => `${file.index} ${file.path}`)
