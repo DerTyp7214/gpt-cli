@@ -81,7 +81,7 @@ async function ask(
       message: 'Select a response:',
       choices: [
         ...response.map((response) => ({
-          name: parseCommand(response),
+          name: parseCommand(response, false),
           value: response,
         })),
         { name: 'Specify a new response', value: 'internal-new' },

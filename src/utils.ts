@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 
-export function parseCommand(line: string): string {
+export function parseCommand(line: string, newLines: boolean = true): string {
   if (line.includes('\n')) {
     return line
       .split('\n')
@@ -9,28 +9,31 @@ export function parseCommand(line: string): string {
   }
 
   if (line.includes(' | ')) {
-    return colorizePipeCommand(line)
+    return colorizePipeCommand(line, newLines)
   }
 
   if (line.includes(' && ')) {
-    return colorizeAndCommand(line)
+    return colorizeAndCommand(line, newLines)
   }
 
   return colorizeCommand(line)
 }
 
-function colorizePipeCommand(command: string): string {
+function colorizePipeCommand(
+  command: string,
+  newLines: boolean = true
+): string {
   return command
     .split(' | ')
     .map(colorizeCommand)
-    .join(chalk.blackBright(' |\n'))
+    .join(chalk.blackBright(' |' + (newLines ? '\n' : ' ')))
 }
 
-function colorizeAndCommand(command: string): string {
+function colorizeAndCommand(command: string, newLines: boolean = true): string {
   return command
     .split(' && ')
     .map(colorizeCommand)
-    .join(chalk.blackBright(' &&\n'))
+    .join(chalk.blackBright(' &&' + (newLines ? '\n' : ' ')))
 }
 
 function colorizeCommand(command: string): string {
