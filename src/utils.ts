@@ -99,7 +99,7 @@ function replaceGitmojiWithEmoji(message: string): string {
       const emojiSupported = emoji in emojiMap
 
       if (emojiSupported) {
-        message = message.replace(gitmoji, emojiMap[emoji] + ' ')
+        message = message.replace(gitmoji, emojiMap[emoji])
       }
     }
   }

@@ -126,7 +126,7 @@ async function ask(
       if (answers.answer === 'yes') {
         for (const command of answer.split('\n')) {
           console.log(
-            `\n\n${chalk.magentaBright('Running')}: ${parseCommand(command)}`
+            `\n\n${chalk.magentaBright('Running')}:\n${parseCommand(command)}`
           )
           await runCommand(command)
         }
@@ -246,7 +246,7 @@ async function run() {
   }
 
   console.log(
-    `\n\n${chalk.magentaBright('Running')}: ${parseCommand(answer)}\n`
+    `\n\n${chalk.magentaBright('Running')}:\n${parseCommand(answer)}\n`
   )
   await runCommand(answer)
 }
