@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es6", "dom"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "typeRoots": ["node_modules/@types", "src/scripts/noble-winrt.d.ts"],
+    "sourceMap": true,
+    "outDir": "dist",
+    "downlevelIteration": true
+  },
+  "include": ["src/**/*", "src/scripts/noble-winrt.d.ts"],
+  "exclude": ["node_modules", "typings", "ts"]
+}
