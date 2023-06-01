@@ -13,6 +13,7 @@ import {
   getStagedFiles,
   getTags,
 } from '../os/git.js'
+import { parseCommand } from '../utils.js'
 
 const chatGpt = new ChatGpt()
 
@@ -107,7 +108,27 @@ async function ask(
     const answer = response[0]
 
     if (answer.split('\n').length > 1) {
-      console.log(answer)
+      console.log(parseCommand(answer))
+      console.log('')
+
+      const answers = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'answer',
+          message: 'Run these commands?',
+          choices: [
+            { name: 'Yes', value: 'yes' },
+            { name: 'No', value: 'no' },
+          ],
+        },
+      ])
+
+      if (answers.answer === 'yes') {
+        for (const command of answer.split('\n')) {
+          await runCommand(command)
+        }
+      }
+
       process.exit(0)
     }
   }
@@ -118,7 +139,7 @@ async function ask(
       message: 'Select a response:',
       choices: [
         ...response.map((response) => ({
-          name: response,
+          name: parseCommand(response),
           value: response,
         })),
         { name: 'Specify a new response', value: 'internal-new' },

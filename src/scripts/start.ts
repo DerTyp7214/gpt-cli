@@ -5,6 +5,7 @@ import { spawn } from 'child_process'
 import inquirer from 'inquirer'
 import ChatGpt from '../gpt/api.js'
 import { SystemInfo, getSystemInfo } from '../os/info.js'
+import { parseCommand } from '../utils.js'
 
 const chatGpt = new ChatGpt()
 
@@ -70,7 +71,7 @@ async function ask(
     const answer = response[0]
 
     if (answer.split('\n').length > 1) {
-      console.log(answer)
+      console.log(parseCommand(answer))
       process.exit(0)
     }
   }
@@ -81,7 +82,7 @@ async function ask(
       message: 'Select a response:',
       choices: [
         ...response.map((response) => ({
-          name: response,
+          name: parseCommand(response),
           value: response,
         })),
         { name: 'Specify a new response', value: 'internal-new' },
