@@ -21,7 +21,7 @@ const specifications = [
   'Dont come with "it depends" or "it is not possible" or "im just a bot".',
   'Do not include the question in the answer.',
   'Do not put the answer in a code block.',
-  'No "Answer:" or "Output:" or anything else.',
+  'No "Answer:" or "Output:" or "Command:" or anything else.',
   'No "The answer is:" or "The output is:" or anything else.',
   'This is only for git related questions.',
   'Use the information of username and git info to answer the question. You dont need access to the machine to answer the question. I gave you all the information you need.',
