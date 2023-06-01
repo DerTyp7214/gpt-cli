@@ -140,6 +140,7 @@ const emojiMap: Record<string, string> = {
   hammer: '🔨',
   globe_with_meridians: '🌐',
   pencil2: '✏️',
+  pencil: '✏️',
   poop: '💩',
   rewind: '⏪',
   twisted_rightwards_arrows: '🔀',
