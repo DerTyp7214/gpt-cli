@@ -5,12 +5,14 @@
   "type": "module",
   "bin": {
     "gpt-cli": "./dist/scripts/start.js",
-    "gpt-git": "./dist/scripts/git.js"
+    "gpt-git": "./dist/scripts/git.js",
+    "gpt-commit": "./dist/scripts/commit.js"
   },
   "scripts": {
     "test": "ts-node-esm src/scripts/test.ts",
     "start": "ts-node-esm src/scripts/start.ts",
     "git": "ts-node-esm src/scripts/git.ts",
+    "commit": "ts-node-esm src/scripts/commit.ts",
     "package": "tsc -p .",
     "install-package": "ts-node-esm scripts/build.ts && npm install -g ./bin/gpt-cli.tgz && ts-node-esm scripts/localScripts.ts"
   },

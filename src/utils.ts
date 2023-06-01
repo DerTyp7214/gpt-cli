@@ -1,5 +1,19 @@
 import chalk from 'chalk'
 
+export function buildGitCommands(
+  files: string[],
+  message: string,
+  push: boolean
+) {
+  return [
+    `git add ${files.join(' ')}`,
+    `git commit -m "${message}"`,
+    push ? `git push` : null,
+  ]
+    .filter((line) => line !== null)
+    .join(' && ')
+}
+
 export function parseCommand(line: string, newLines: boolean = true): string {
   if (line.includes('\n')) {
     return line

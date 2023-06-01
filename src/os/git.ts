@@ -1,3 +1,4 @@
+import fs from 'fs/promises'
 import simpleGit from 'simple-git'
 
 const git = simpleGit()
@@ -39,4 +40,44 @@ export async function getTags(): Promise<string[]> {
 export async function getCurrentBranch(): Promise<string> {
   const branches = await git.branch()
   return branches.current
+}
+
+export async function getDiff(files: string[]): Promise<string> {
+  const diff = await git.diff(files)
+  return diff
+}
+
+export async function getAllFiles(): Promise<string[]> {
+  const status = await git.status()
+  return status.files.map((file) => file.path)
+}
+
+export async function getCreatedFiles(
+  fullDiff: boolean = false
+): Promise<string[]> {
+  const status = await git.status()
+  if (fullDiff) {
+    return await Promise.all(
+      status.created.map(async (file) => {
+        const content = await fs.readFile(file, 'utf8')
+        return `${file}\n${content}`
+      })
+    )
+  }
+  return status.created
+}
+
+export async function getDeletedFiles(
+  fullDiff: boolean = false
+): Promise<string[]> {
+  const status = await git.status()
+  if (fullDiff) {
+    return await Promise.all(
+      status.deleted.map(async (file) => {
+        const content = await fs.readFile(file, 'utf8')
+        return `${file}\n${content}`
+      })
+    )
+  }
+  return status.deleted
 }
