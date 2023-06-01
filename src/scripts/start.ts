@@ -66,24 +66,22 @@ async function ask(
 
   if (response.length === 0) {
     return false
-  } else if (response.length === 1) {
-    const answer = response[0]
-
-    if (answer.split('\n').length > 1) {
-      console.log(parseCommand(answer))
-      process.exit(0)
-    }
   }
+
+  console.log('')
+  console.log(chalk.magentaBright('Answer:'))
+  console.log(parseCommand(response[0]))
+  console.log('')
+
   const answers = await inquirer.prompt([
     {
       type: 'list',
       name: 'answer',
-      message: 'Select a response:',
+      message: '🤖',
+      prefix: '',
       choices: [
-        ...response.map((response) => ({
-          name: parseCommand(response, false),
-          value: response,
-        })),
+        { name: 'Run this command', value: 'run-command' },
+        { type: 'separator', name: 'Other' },
         { name: 'Specify a new response', value: 'internal-new' },
         { name: 'Exit', value: 'internal-exit' },
       ],
@@ -106,7 +104,7 @@ async function ask(
     return ask(newQuestion.question, [...history, question])
   }
 
-  return answers.answer
+  return response[0]
 }
 
 async function runCommand(command: string) {
