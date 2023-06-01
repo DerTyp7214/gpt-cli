@@ -1,5 +1,4 @@
-#! /usr/bin/env node
-
+#!/usr/bin/env node
 import chalk from 'chalk'
 import { spawn } from 'child_process'
 import inquirer from 'inquirer'
