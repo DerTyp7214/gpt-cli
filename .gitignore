@@ -1,6 +1,8 @@
 *
 !*.ts
 !src
+!src/*
+!src/**/*.ts
 src/test.ts
 !scripts
 !localScripts
