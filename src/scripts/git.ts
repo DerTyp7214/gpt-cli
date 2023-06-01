@@ -10,6 +10,7 @@ import {
   getChangedFiles,
   getCurrentBranch,
   getRemotes,
+  getStagedFiles,
   getTags,
 } from '../os/git.js'
 
@@ -40,9 +41,10 @@ async function buildGitInfoHeader() {
 }
 
 async function buildQuery(query: string) {
-  const [changedFiles, remotes, branches, currentBranch, tags] =
+  const [changedFiles, staged, remotes, branches, currentBranch, tags] =
     await Promise.all([
       getChangedFiles(),
+      getStagedFiles(),
       getRemotes(),
       getBranches(),
       getCurrentBranch(),
@@ -58,6 +60,11 @@ async function buildQuery(query: string) {
       changedFiles.length > 0
         ? `Changed Files:\n    ${changedFiles.join('\n    ')}\n`
         : 'No Changed Files'
+    }
+    ${
+      staged.length > 0
+        ? `Staged Files:\n    ${staged.join('\n    ')}\n`
+        : 'Changed Files have to be staged first.'
     }
     ${
       remotes.length > 0

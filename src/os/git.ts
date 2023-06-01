@@ -4,7 +4,12 @@ const git = simpleGit()
 
 export async function getChangedFiles(): Promise<string[]> {
   const status = await git.status()
-  return status.files.map((file) => file.path)
+  return status.files.map((file) => `${file.index} ${file.path}`)
+}
+
+export async function getStagedFiles(): Promise<string[]> {
+  const status = await git.status()
+  return status.staged
 }
 
 export async function getRemotes(): Promise<string[]> {
