@@ -25,6 +25,7 @@ const specifications = [
   'No "The answer is:" or "The output is:" or anything else.',
   'This is only for git related questions.',
   'Use the information of username and git info to answer the question. You dont need access to the machine to answer the question. I gave you all the information you need.',
+  'Commit messages should not be like "fix <files>" or "update <files>" or "Add new features", they should be a bit more descriptive.',
   'You can use gitmoji to generate a commit message.',
   'I want a command line answer, not a script.',
   'It can be multiple commands, but append them with &&.',
