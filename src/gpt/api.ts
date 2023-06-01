@@ -4,16 +4,29 @@ import dotenv from 'dotenv'
 import logUpdate from 'log-update'
 import path from 'path'
 
-const frameString = '⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏'
+const frames = [
+  '🕐',
+  '🕑',
+  '🕒',
+  '🕓',
+  '🕔',
+  '🕕',
+  '🕖',
+  '🕗',
+  '🕘',
+  '🕙',
+  '🕚',
+  '🕛',
+]
 let frameIndex = 0
 let lastFrame = Date.now()
 
 function loading(line: string, index?: number): string {
-  if (frameIndex >= frameString.length) frameIndex = 0
+  if (frameIndex >= frames.length) frameIndex = 0
   const fIndex =
     lastFrame + 100 < Date.now() ? index ?? frameIndex++ : index ?? frameIndex
   if (lastFrame + 100 < Date.now()) lastFrame = Date.now()
-  return line.replace(/\[ \]/g, `[${chalk.yellow(frameString[fIndex])}]`)
+  return line.replace(/\[ \]/g, frames[fIndex])
 }
 
 class ChatGPT {
