@@ -13,7 +13,21 @@ gpt-cli <prompt>
 Replace `<prompt>` with the prompt you want to generate text for. For example:
 
 ```bash
-gpt-cli 'Once upon a time, there was a'
+gpt-cli get my ip
 ```
 
-This will generate a short story starting with the given prompt.
+This will generate a command to get your IP address.
+
+There is also a version specifically for git:
+
+```bash
+gpt-git <prompt>
+```
+
+Replace `<prompt>` with the prompt you want to generate text for. For example:
+
+```bash
+gpt-git add all files
+```
+
+This will generate a command to add all files to git.
