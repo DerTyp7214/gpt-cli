@@ -21,3 +21,8 @@ export async function getTags(): Promise<string[]> {
   const tags = await git.tags()
   return tags.all
 }
+
+export async function getCurrentBranch(): Promise<string> {
+  const branches = await git.branch()
+  return branches.current
+}

@@ -5,7 +5,13 @@ import { spawn } from 'child_process'
 import inquirer from 'inquirer'
 import Os from 'os'
 import ChatGpt from '../gpt/api.js'
-import { getBranches, getChangedFiles, getRemotes, getTags } from '../os/git.js'
+import {
+  getBranches,
+  getChangedFiles,
+  getCurrentBranch,
+  getRemotes,
+  getTags,
+} from '../os/git.js'
 
 const chatGpt = new ChatGpt()
 
@@ -25,6 +31,7 @@ const specifications = [
 
 async function buildGitInfoHeader() {
   return [
+    `OS: ${Os.type()} ${Os.release()}`,
     `Current Directory: ${process.cwd()}`,
     `Username: ${Os.userInfo().username}`,
   ]
@@ -33,12 +40,14 @@ async function buildGitInfoHeader() {
 }
 
 async function buildQuery(query: string) {
-  const [changedFiles, remotes, branches, tags] = await Promise.all([
-    getChangedFiles(),
-    getRemotes(),
-    getBranches(),
-    getTags(),
-  ])
+  const [changedFiles, remotes, branches, currentBranch, tags] =
+    await Promise.all([
+      getChangedFiles(),
+      getRemotes(),
+      getBranches(),
+      getCurrentBranch(),
+      getTags(),
+    ])
 
   return `
     System Info:
@@ -59,6 +68,11 @@ async function buildQuery(query: string) {
       branches.length > 0
         ? `Branches:\n    ${branches.join('\n    ')}\n`
         : 'No Branches'
+    }
+    ${
+      currentBranch
+        ? `Current Branch:\n    ${currentBranch}\n`
+        : 'No Current Branch'
     }
     ${tags.length > 0 ? `Tags:\n    ${tags.join('\n    ')}\n` : 'No Tags'}
 
